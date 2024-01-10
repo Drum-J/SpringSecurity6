@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,5 +26,15 @@ public class LoginService {
         customerRepository.save(customer);
 
         return customer.getId();
+    }
+
+    public Customer getUser(String name) {
+        List<Customer> customers = customerRepository.findByEmail(name);
+
+        if (customers.isEmpty()) {
+            return null;
+        } else {
+            return customers.get(0);
+        }
     }
 }
