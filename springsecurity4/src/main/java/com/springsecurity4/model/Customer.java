@@ -26,4 +26,8 @@ public class Customer {
         this.password = password;
         this.role = role;
     }
+
+    public void setHashingPassword(String encode) {
+        this.password = encode;
+    }
 }
