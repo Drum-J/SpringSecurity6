@@ -45,10 +45,10 @@ public class ProjectSecurityConfig {
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // CSRF 토큰을 쿠키로 유지하고 헤더에서 찾는 역할
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
-                    .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
-                    .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
-                    .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                    .requestMatchers("/myAccount").hasRole("USER") // .hasRole()을 사용할 때는 "ROLE_"를 적으면 안된다. 해당 메서드가 알아서 붙여주기 때문
+                    .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
+                    .requestMatchers("/myLoans").hasRole("USER")
+                    .requestMatchers("/myCards").hasRole("USER")
                     .requestMatchers("/user").authenticated()
                     .requestMatchers("/contact","/notices","/register").permitAll())
             .formLogin(withDefaults())

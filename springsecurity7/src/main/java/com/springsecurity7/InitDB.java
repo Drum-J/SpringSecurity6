@@ -57,26 +57,16 @@ public class InitDB {
             customer.setCreateDt(currentDate.format(formatter));
 
             Authority authority = new Authority();
-            authority.setName("VIEWACCOUNT");
+            authority.setName("ROLE_ADMIN");
 
             Authority authority2 = new Authority();
-            authority2.setName("VIEWCARDS");
-
-            Authority authority3 = new Authority();
-            authority3.setName("VIEWLOANS");
-
-            Authority authority4 = new Authority();
-            authority4.setName("VIEWBALANCE");
+            authority2.setName("ROLE_USER");
 
             em.persist(authority);
             em.persist(authority2);
-            em.persist(authority3);
-            em.persist(authority4);
 
             customer.setAuthorities(authority);
             customer.setAuthorities(authority2);
-            customer.setAuthorities(authority3);
-            customer.setAuthorities(authority4);
 
             customerRepository.save(customer);
 
