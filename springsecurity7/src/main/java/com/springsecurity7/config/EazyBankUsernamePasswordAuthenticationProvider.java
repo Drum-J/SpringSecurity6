@@ -1,5 +1,6 @@
 package com.springsecurity7.config;
 
+import com.springsecurity7.model.Authority;
 import com.springsecurity7.model.Customer;
 import com.springsecurity7.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -30,16 +32,21 @@ public class EazyBankUsernamePasswordAuthenticationProvider implements Authentic
 
         if (!customer.isEmpty()) {
             if (passwordEncoder.matches(password, customer.get(0).getPassword())) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(customer.get(0).getRole()));
-
-                return new UsernamePasswordAuthenticationToken(username, password, authorities);
+                return new UsernamePasswordAuthenticationToken(username, password, getGrantedAuthorities(customer.get(0).getAuthorities()));
             } else {
                 throw new BadCredentialsException("패스워드가 일치 하지 않습니다.");
             }
         } else {
             throw new BadCredentialsException("해당 유저를 찾을 수 없습니다.");
         }
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (Authority authority : authorities) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+        }
+        return grantedAuthorities;
     }
 
     @Override

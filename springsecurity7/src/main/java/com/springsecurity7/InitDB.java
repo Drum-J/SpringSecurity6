@@ -3,6 +3,7 @@ package com.springsecurity7;
 import com.springsecurity7.model.*;
 import com.springsecurity7.repository.*;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class InitDB {
         private final CustomerRepository customerRepository;
         private final LoanRepository loanRepository;
         private final NoticeRepository noticeRepository;
+        private final EntityManager em;
 
         public void initData() {
             // 현재 날짜 가져오기
@@ -53,6 +55,29 @@ public class InitDB {
 
             Customer customer = new Customer("test@naver.com","$2y$12$oRRbkNfwuR8ug4MlzH5FOeui.//1mkd.RsOAJMbykTSupVy.x/vb2","admin","010-6653-6258","승호");
             customer.setCreateDt(currentDate.format(formatter));
+
+            Authority authority = new Authority();
+            authority.setName("VIEWACCOUNT");
+
+            Authority authority2 = new Authority();
+            authority2.setName("VIEWCARDS");
+
+            Authority authority3 = new Authority();
+            authority3.setName("VIEWLOANS");
+
+            Authority authority4 = new Authority();
+            authority4.setName("VIEWBALANCE");
+
+            em.persist(authority);
+            em.persist(authority2);
+            em.persist(authority3);
+            em.persist(authority4);
+
+            customer.setAuthorities(authority);
+            customer.setAuthorities(authority2);
+            customer.setAuthorities(authority3);
+            customer.setAuthorities(authority4);
+
             customerRepository.save(customer);
 
             Accounts accounts = new Accounts(1865764534,1,"Savings","대구 북구 구암서로 41",String.valueOf(new Date(System.currentTimeMillis())));
