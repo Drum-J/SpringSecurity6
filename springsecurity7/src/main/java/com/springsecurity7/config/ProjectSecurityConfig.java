@@ -45,8 +45,12 @@ public class ProjectSecurityConfig {
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // CSRF 토큰을 쿠키로 유지하고 헤더에서 찾는 역할
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/myAccount","/myBalance","/myLoans","/myCards","/user").authenticated()
-            .requestMatchers("/contact","/notices","/register").permitAll())
+                    .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                    .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
+                    .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                    .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                    .requestMatchers("/user").authenticated()
+                    .requestMatchers("/contact","/notices","/register").permitAll())
             .formLogin(withDefaults())
             .httpBasic(withDefaults());
         return http.build();
