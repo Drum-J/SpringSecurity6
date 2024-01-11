@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class LoginService {
     public int join(RegisterDTO dto) {
         Customer customer = dto.convertEntity();
         customer.setHashingPassword(encoder.encode(dto.getPassword()));
+        customer.setCreateDt(String.valueOf(LocalDate.now()));
 
         customerRepository.save(customer);
 
