@@ -3,6 +3,7 @@ package com.springsecurity10.controller;
 import com.springsecurity10.model.Contact;
 import com.springsecurity10.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,8 @@ public class ContactController {
     private final ContactRepository contactRepository;
 
     @PostMapping("/contact")
-    @PreFilter(value = "filterObject.contactName != 'Test'") // Contact.contactName != Test 인 것만 처리하고 싶다.
+    //@PreFilter(value = "filterObject.contactName != 'Test'") // Contact.contactName != Test 인 것만 처리하고 싶다.
+    @PostFilter(value = "filterObject.contactName != 'Test'")
     public List<Contact> saveContactInquiryDetails(@RequestBody List<Contact> contacts) {
         //@PreFilter 를 사용하기 위해서는 반환 타입이 컬렉션이어야 한다.
         Contact contact = contacts.get(0);
