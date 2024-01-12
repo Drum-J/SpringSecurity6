@@ -53,7 +53,7 @@ public class ProjectSecurityConfig {
             .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/myAccount").hasRole("USER") // .hasRole()을 사용할 때는 "ROLE_"를 적으면 안된다. 해당 메서드가 알아서 붙여주기 때문
                     .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
-                    .requestMatchers("/myLoans").hasRole("USER")
+                    .requestMatchers("/myLoans").authenticated()
                     .requestMatchers("/myCards").hasRole("USER")
                     .requestMatchers("/user").authenticated()
                     .requestMatchers("/contact","/notices","/register").permitAll())
