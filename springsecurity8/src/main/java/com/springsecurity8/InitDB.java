@@ -53,7 +53,7 @@ public class InitDB {
 
 
 
-            Customer customer = new Customer("test@naver.com","$2y$12$oRRbkNfwuR8ug4MlzH5FOeui.//1mkd.RsOAJMbykTSupVy.x/vb2","admin","010-6653-6258","승호");
+            Customer customer = new Customer("tmdgh717@naver.com","$2y$12$oRRbkNfwuR8ug4MlzH5FOeui.//1mkd.RsOAJMbykTSupVy.x/vb2","admin","010-6653-6258","승호");
             customer.setCreateDt(currentDate.format(formatter));
 
             Authority authority = new Authority();
