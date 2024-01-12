@@ -49,6 +49,7 @@ public class ProjectSecurityConfig {
             .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
             .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
             .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+            .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
             .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/myAccount").hasRole("USER") // .hasRole()을 사용할 때는 "ROLE_"를 적으면 안된다. 해당 메서드가 알아서 붙여주기 때문
                     .requestMatchers("/myBalance").hasAnyRole("USER","ADMIN")
