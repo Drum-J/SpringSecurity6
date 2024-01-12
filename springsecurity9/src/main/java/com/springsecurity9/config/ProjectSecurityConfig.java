@@ -19,6 +19,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,14 +32,14 @@ public class ProjectSecurityConfig {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf"); // 이 코드는 작성하지 않아도 되지만 코드 가독성을 위해 추가했다.
 
-        http.securityContext(context -> context.requireExplicitSave(false))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+        http.sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Session 사용 안함
             .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(Collections.singletonList("http://localhost:4200")); // Angular UI Application
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Collections.singletonList("*"));
+                config.setExposedHeaders(Arrays.asList("Authorization")); // 해당 헤더 이름에 JWT 값 담아서 보낼 거라고 세팅
                 config.setMaxAge(3600L);
                 return config;
             }))
