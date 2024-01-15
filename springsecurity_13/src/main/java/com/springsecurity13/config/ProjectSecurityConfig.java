@@ -57,12 +57,6 @@ public class ProjectSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
     //H2 DB 가 Security를 통과하지 않도록
     @Bean
     @ConditionalOnProperty(name = "spring.h2.console.enabled",havingValue = "true")
