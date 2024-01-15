@@ -1,7 +1,9 @@
 package com.springsecurity13.controller;
 
 import com.springsecurity13.model.Cards;
+import com.springsecurity13.model.Customer;
 import com.springsecurity13.repository.CardsRepository;
+import com.springsecurity13.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,9 +19,15 @@ import java.util.List;
 public class CardsController {
 
     private final CardsRepository cardsRepository;
+    private final CustomerRepository customerRepository;
 
     @GetMapping("/myCards")
-    public List<Cards> getCardsDetails(@RequestParam(name = "id") int id) {
-        return cardsRepository.findByCustomerId(id);
+    public List<Cards> getCardsDetails(@RequestParam(name = "email") String email) {
+        List<Customer> findCustomers = customerRepository.findByEmail(email);
+        if (!findCustomers.isEmpty()) {
+            return cardsRepository.findByCustomerId(findCustomers.get(0).getId());
+        }
+
+        return null;
     }
 }

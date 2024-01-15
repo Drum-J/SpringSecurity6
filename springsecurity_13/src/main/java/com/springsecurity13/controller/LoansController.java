@@ -1,6 +1,8 @@
 package com.springsecurity13.controller;
 
+import com.springsecurity13.model.Customer;
 import com.springsecurity13.model.Loans;
+import com.springsecurity13.repository.CustomerRepository;
 import com.springsecurity13.repository.LoanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -18,10 +20,16 @@ import java.util.List;
 public class LoansController {
 
     private final LoanRepository loanRepository;
+    private final CustomerRepository customerRepository;
 
     @GetMapping("/myLoans")
     @PostAuthorize("hasRole('USER')")
-    public List<Loans> getLoanDetails(@RequestParam(name = "id") int id) {
-        return loanRepository.findByCustomerIdOrderByStartDtDesc(id);
+    public List<Loans> getLoanDetails(@RequestParam(name = "email") String email) {
+        List<Customer> findCustomers = customerRepository.findByEmail(email);
+        if (!findCustomers.isEmpty()) {
+            return loanRepository.findByCustomerIdOrderByStartDtDesc(findCustomers.get(0).getId());
+        }
+
+        return null;
     }
 }
